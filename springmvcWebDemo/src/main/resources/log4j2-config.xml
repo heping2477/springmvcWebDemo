@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="debug" monitorInterval="30">
+<properties>
+    <Property name="log_path">../logs/hpLogs</Property>
+</properties>
+<Appenders>
+    <Console name="Console" target="SYSTEM_OUT">
+        <PatternLayout pattern="%d{yyyy-MM-dd HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n" />
+    </Console>
+    <RollingFile name="appfile" fileName="${log_path}/springmvcWebDemo.log"
+                 filePattern="${log_path}/$${date:yyyy-MM}/nscs-%d{yyyy-MM-dd}-%i.log.gz">
+        <PatternLayout pattern="%d{yyyy.MM.dd HH:mm:ss.SSS} %-5level [%thread] %logger{36} - %msg%xEx%n"/>
+        <Policies>
+            <!--根据文件大小分隔-->
+            <SizeBasedTriggeringPolicy size="50 MB" />
+            <!--按照时间分隔 interval 间隔 modulate以0点为边界计算-->
+            <TimeBasedTriggeringPolicy interval="24" modulate="true" />
+        </Policies>
+        <!--文件保存最大数量-->
+        <!--<DefaultRolloverStrategy max="20"/>-->
+    </RollingFile>
+</Appenders>
+
+<Loggers>
+    <logger name="com.hp.mapper" level="DEBUG" additivity="false">
+        <appender-ref ref="Console"/>
+    </logger>
+    <!-- 指定logger的设置，additivity指示是否遵循缺省的继承机制-->
+    <logger name="com.hp" level="DEBUG" includeLocation="true" additivity="false">
+        <appender-ref ref="Console"/>
+        <appender-ref ref="appfile"/>
+    </logger>
+    <!--<logger name="org.springframework" level="INFO" additivity="false">-->
+        <!--<appender-ref ref="Console"/>-->
+    <!--</logger>-->
+    <!--<logger name="org.apache.ibatis" level="DEBUG" additivity="false">-->
+        <!--<appender-ref ref="Console"/>-->
+    <!--</logger>-->
+    <!--<logger name="org.mybatis" level="DEBUG" additivity="false">-->
+        <!--<appender-ref ref="Console"/>-->
+    <!--</logger>-->
+
+    <!-- 根logger的设置-->
+    <root level="INFO" includeLocation="true">
+        <appender-ref ref="Console"/>
+    </root>
+</Loggers>
+</Configuration>
